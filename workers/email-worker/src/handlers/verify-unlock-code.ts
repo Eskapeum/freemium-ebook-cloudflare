@@ -95,22 +95,10 @@ export async function handleVerifyUnlockCode(request: Request, env: Env): Promis
       source: 'web'
     }, env, email);
 
-    // Queue success email
-    try {
-      await env.EMAIL_QUEUE.send({
-        type: 'access_granted',
-        email,
-        firstName: user.first_name
-      });
-      
-      log('info', 'Access granted email queued', { email }, requestId);
-    } catch (queueError) {
-      log('error', 'Failed to queue access granted email', { 
-        email, 
-        error: queueError.message 
-      }, requestId);
-      // Don't fail the verification if email queueing fails
-    }
+    // Log success for testing (in production, send confirmation email)
+    log('info', `ACCESS GRANTED for ${email} - Premium chapters unlocked!`, { email }, requestId);
+
+    // TODO: Send confirmation email (integrate with email service)
 
     const response: VerifyCodeResponse = {
       success: true,

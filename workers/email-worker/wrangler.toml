@@ -11,24 +11,22 @@ database_id = "900577dd-598f-4c39-b753-e9fe436b29f4"
 # KV Bindings
 [[kv_namespaces]]
 binding = "CACHE_KV"
-id = "cache_kv_namespace"
-preview_id = "cache_kv_namespace_preview"
+id = "b39637e739454ae1a775f714ce7c3200"
 
 [[kv_namespaces]]
 binding = "ANALYTICS_KV"
-id = "analytics_kv_namespace"
-preview_id = "analytics_kv_namespace_preview"
+id = "2bf5049d1b994fb3bd9093828581ec64"
 
-# Queue Binding
-[[queues.producers]]
-binding = "EMAIL_QUEUE"
-queue = "email-processing"
+# Queue Binding (Disabled for free plan)
+# [[queues.producers]]
+# binding = "EMAIL_QUEUE"
+# queue = "email-processing"
 
-# Queue Consumer
-[[queues.consumers]]
-queue = "email-processing"
-max_batch_size = 10
-max_batch_timeout = 30
+# Queue Consumer (Disabled for free plan)
+# [[queues.consumers]]
+# queue = "email-processing"
+# max_batch_size = 10
+# max_batch_timeout = 30
 
 # Development environment
 [env.development]

@@ -69,24 +69,11 @@ export async function handleSendUnlockCode(request: Request, env: Env): Promise<
       log('info', 'New user created with unlock code', { email }, requestId);
     }
 
-    // Queue unlock code email
-    try {
-      await env.EMAIL_QUEUE.send({
-        type: 'unlock_code',
-        email,
-        firstName,
-        unlockCode,
-        expiresAt: expiresAt.toISOString()
-      });
-      
-      log('info', 'Unlock code email queued', { email }, requestId);
-    } catch (queueError) {
-      log('error', 'Failed to queue unlock code email', { 
-        email, 
-        error: queueError.message 
-      }, requestId);
-      // Don't fail the request if email queueing fails
-    }
+    // Log unlock code for testing (in production, integrate with email service)
+    log('info', `UNLOCK CODE for ${email}: ${unlockCode} (expires: ${expiresAt.toISOString()})`, { email }, requestId);
+
+    // TODO: Integrate with email service (SendGrid, Mailgun, etc.)
+    // For now, we'll log the code for testing purposes
 
     // Track unlock code request event
     await trackEvent('unlock_code_requested', {

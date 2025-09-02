@@ -95,11 +95,11 @@ export default {
       
       return addCorsHeaders(errorResponse);
     }
-  },
-
-  // Queue consumer for email processing
-  async queue(batch: MessageBatch, env: Env, ctx: ExecutionContext): Promise<void> {
-    const { default: queueConsumer } = await import('./handlers/queue-consumer');
-    return queueConsumer.queue(batch, env, ctx);
   }
+
+  // Queue consumer disabled for free plan
+  // async queue(batch: MessageBatch, env: Env, ctx: ExecutionContext): Promise<void> {
+  //   const { default: queueConsumer } = await import('./handlers/queue-consumer');
+  //   return queueConsumer.queue(batch, env, ctx);
+  // }
 };
