@@ -1,4 +1,4 @@
-name = "handbook-email-worker"
+name = "creators-handbook-backend"
 main = "src/index.ts"
 compatibility_date = "2024-08-31"
 

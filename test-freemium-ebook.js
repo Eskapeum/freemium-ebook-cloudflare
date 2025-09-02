@@ -5,10 +5,10 @@ const { chromium } = require('playwright');
   const page = await browser.newPage();
   
   try {
-    console.log('🚀 Testing freemium e-book at http://localhost:3003');
-    
+    console.log('🚀 Testing LIVE freemium e-book on Cloudflare Workers at https://freemium-ebook-frontend.tdadelaja.workers.dev');
+
     // Navigate to the homepage
-    await page.goto('http://localhost:3003');
+    await page.goto('https://freemium-ebook-frontend.tdadelaja.workers.dev');
     await page.waitForLoadState('networkidle');
     
     // Check if the page loaded correctly

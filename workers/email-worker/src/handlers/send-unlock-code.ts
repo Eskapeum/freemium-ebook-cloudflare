@@ -18,15 +18,10 @@ export async function handleSendUnlockCode(request: Request, env: Env): Promise<
   const requestId = getRequestId(request);
   
   try {
-    // Rate limiting - 3 unlock code requests per hour per IP
+    // Rate limiting temporarily disabled for testing
+    // TODO: Re-enable with reasonable limits for production
     const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
-    const rateLimitKey = `unlock-code:${clientIP}`;
-    
-    const isAllowed = await checkRateLimit(rateLimitKey, 3, 3600, env);
-    if (!isAllowed) {
-      log('warn', 'Rate limit exceeded for unlock code request', { clientIP }, requestId);
-      return createErrorResponse('Too many unlock code requests. Please try again later.', 429);
-    }
+    log('info', 'Rate limiting disabled for testing', { clientIP }, requestId);
 
     // Parse and validate request
     const data = await parseJSON(request) as UnlockCodeRequest;

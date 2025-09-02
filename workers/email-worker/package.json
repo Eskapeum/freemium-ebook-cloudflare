@@ -1,7 +1,7 @@
 {
-  "name": "email-worker",
+  "name": "creators-handbook-backend",
   "version": "1.0.0",
-  "description": "Email Worker for Content Creator Handbook",
+  "description": "Cloudflare Worker backend for Creator's Handbook email unlock system",
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",

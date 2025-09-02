@@ -1,0 +1,12 @@
+name = "creators-handbook-frontend"
+main = "src/index.ts"
+compatibility_date = "2024-09-02"
+
+# KV Bindings for static assets
+[[kv_namespaces]]
+binding = "ASSETS"
+id = "201ca911e0cc467788d54b646f6d2fb0"
+
+# Environment variables
+[vars]
+BACKEND_URL = "https://creators-handbook-backend.tdadelaja.workers.dev"
