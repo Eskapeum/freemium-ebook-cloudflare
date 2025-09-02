@@ -1,0 +1,38 @@
+name = "handbook-api-gateway"
+main = "src/index.ts"
+compatibility_date = "2024-08-31"
+
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "handbook-db"
+database_id = "900577dd-598f-4c39-b753-e9fe436b29f4"
+
+# Service Bindings to other workers
+[[services]]
+binding = "AUTH_WORKER"
+service = "handbook-auth-worker"
+
+[[services]]
+binding = "EMAIL_WORKER"
+service = "handbook-email-worker"
+
+[[services]]
+binding = "PROGRESS_WORKER"
+service = "handbook-progress-worker"
+
+# Development environment
+[env.development]
+workers_dev = true
+
+[env.development.vars]
+ENVIRONMENT = "development"
+FRONTEND_URL = "http://localhost:3000"
+
+# Production environment
+[env.production]
+workers_dev = false
+
+[env.production.vars]
+ENVIRONMENT = "production"
+FRONTEND_URL = "https://yourhandbook.com"

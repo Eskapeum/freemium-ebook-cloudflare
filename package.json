@@ -1,0 +1,19 @@
+{
+  "name": "colorful_e-book_creation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "wrangler": "^4.33.1"
+  },
+  "dependencies": {
+    "@splinetool/react-spline": "^4.1.0"
+  }
+}

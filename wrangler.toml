@@ -1,0 +1,22 @@
+name = "handbook-backend"
+main = "workers/api-gateway/src/index.ts"
+compatibility_date = "2024-08-31"
+
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "handbook-db"
+database_id = "900577dd-598f-4c39-b753-e9fe436b29f4"
+
+# Development environment
+[env.development]
+workers_dev = true
+
+# Production environment
+[env.production]
+workers_dev = false
+
+# Environment Variables
+[vars]
+ENVIRONMENT = "development"
+FRONTEND_URL = "http://localhost:3000"
