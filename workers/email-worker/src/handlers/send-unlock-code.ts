@@ -2,10 +2,11 @@
 
 import { Env, UnlockCodeRequest, UnlockCodeResponse } from '../../../shared/types';
 import { EmailSubscriberDB } from '../../../shared/db-helpers';
-import { 
-  parseJSON, 
-  isValidEmail, 
-  createErrorResponse, 
+import { ResendEmailService } from '../services/resend-email-service';
+import {
+  parseJSON,
+  isValidEmail,
+  createErrorResponse,
   createSuccessResponse,
   log,
   getRequestId,
@@ -64,11 +65,26 @@ export async function handleSendUnlockCode(request: Request, env: Env): Promise<
       log('info', 'New user created with unlock code', { email }, requestId);
     }
 
-    // Log unlock code for testing (in production, integrate with email service)
-    log('info', `UNLOCK CODE for ${email}: ${unlockCode} (expires: ${expiresAt.toISOString()})`, { email }, requestId);
+    // Send unlock code via Resend email service
+    const emailService = new ResendEmailService(env);
+    const emailResult = await emailService.sendUnlockCodeEmail(email, unlockCode, firstName, requestId);
 
-    // TODO: Integrate with email service (SendGrid, Mailgun, etc.)
-    // For now, we'll log the code for testing purposes
+    if (!emailResult.success) {
+      log('error', 'Failed to send unlock code email', {
+        email,
+        error: emailResult.error
+      }, requestId);
+
+      // Still log the code for backup/testing
+      log('info', `BACKUP - UNLOCK CODE for ${email}: ${unlockCode} (expires: ${expiresAt.toISOString()})`, { email }, requestId);
+
+      return createErrorResponse('Failed to send email. Please try again.', 500);
+    }
+
+    log('info', 'Unlock code email sent successfully', {
+      email,
+      messageId: emailResult.messageId
+    }, requestId);
 
     // Track unlock code request event
     await trackEvent('unlock_code_requested', {

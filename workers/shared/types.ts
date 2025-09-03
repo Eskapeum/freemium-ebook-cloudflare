@@ -21,6 +21,7 @@ export interface Env {
   // Environment variables
   JWT_SECRET: string;
   SENDGRID_API_KEY: string;
+  RESEND_API_KEY: string;
   FRONTEND_URL: string;
   ENVIRONMENT: string;
   SENTRY_TOKEN?: string;
@@ -203,4 +204,27 @@ export interface VerifyCodeResponse {
     last_name?: string;
     has_access: boolean;
   };
+}
+
+// Resend Email Service Types
+export interface ResendEmailRequest {
+  from: string;
+  to: string | string[];
+  subject: string;
+  html?: string;
+  text?: string;
+  reply_to?: string;
+  tags?: Array<{
+    name: string;
+    value: string;
+  }>;
+}
+
+export interface ResendEmailResponse {
+  id: string;
+}
+
+export interface ResendErrorResponse {
+  message: string;
+  name: string;
 }

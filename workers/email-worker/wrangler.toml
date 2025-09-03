@@ -2,6 +2,14 @@ name = "creators-handbook-backend"
 main = "src/index.ts"
 compatibility_date = "2024-08-31"
 
+# Cron triggers for automated email processing
+[triggers]
+crons = ["0 */4 * * *"]  # Process email sequences every 4 hours
+
+# Global environment variables
+[vars]
+RESEND_API_KEY = "re_9toyYQaR_8ZzMttMPpu5z2CfegpumXyPd"
+
 # D1 Database Binding
 [[d1_databases]]
 binding = "DB"
@@ -35,6 +43,7 @@ workers_dev = true
 [env.development.vars]
 ENVIRONMENT = "development"
 FRONTEND_URL = "http://localhost:3000"
+RESEND_API_KEY = "re_9toyYQaR_8ZzMttMPpu5z2CfegpumXyPd"
 
 # Production environment
 [env.production]
@@ -43,3 +52,4 @@ workers_dev = false
 [env.production.vars]
 ENVIRONMENT = "production"
 FRONTEND_URL = "https://yourhandbook.com"
+RESEND_API_KEY = "re_9toyYQaR_8ZzMttMPpu5z2CfegpumXyPd"

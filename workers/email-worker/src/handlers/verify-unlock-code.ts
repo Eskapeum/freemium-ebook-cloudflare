@@ -2,10 +2,12 @@
 
 import { Env, VerifyCodeRequest, VerifyCodeResponse } from '../../../shared/types';
 import { EmailSubscriberDB } from '../../../shared/db-helpers';
-import { 
-  parseJSON, 
-  isValidEmail, 
-  createErrorResponse, 
+import { ResendEmailService } from '../services/resend-email-service';
+import { EmailSequenceProcessor } from '../services/email-sequence-processor';
+import {
+  parseJSON,
+  isValidEmail,
+  createErrorResponse,
   createSuccessResponse,
   log,
   getRequestId,
@@ -95,10 +97,40 @@ export async function handleVerifyUnlockCode(request: Request, env: Env): Promis
       source: 'web'
     }, env, email);
 
-    // Log success for testing (in production, send confirmation email)
-    log('info', `ACCESS GRANTED for ${email} - Premium chapters unlocked!`, { email }, requestId);
+    // Send welcome email after access granted
+    const emailService = new ResendEmailService(env);
+    const welcomeEmailResult = await emailService.sendWelcomeEmail(email, user.first_name, requestId);
 
-    // TODO: Send confirmation email (integrate with email service)
+    if (welcomeEmailResult.success) {
+      log('info', 'Welcome email sent successfully', {
+        email,
+        messageId: welcomeEmailResult.messageId
+      }, requestId);
+    } else {
+      log('warn', 'Failed to send welcome email', {
+        email,
+        error: welcomeEmailResult.error
+      }, requestId);
+    }
+
+    // Add user to email sequence for follow-up emails
+    try {
+      const sequenceProcessor = new EmailSequenceProcessor(env);
+      await sequenceProcessor.addUserToSequence(email, user.first_name, user.last_name, requestId);
+
+      log('info', 'User added to email sequence', {
+        email,
+        firstName: user.first_name
+      }, requestId);
+    } catch (sequenceError) {
+      log('warn', 'Failed to add user to email sequence', {
+        email,
+        error: sequenceError.message
+      }, requestId);
+      // Don't fail the main request if sequence addition fails
+    }
+
+    log('info', `ACCESS GRANTED for ${email} - Premium chapters unlocked!`, { email }, requestId);
 
     const response: VerifyCodeResponse = {
       success: true,
